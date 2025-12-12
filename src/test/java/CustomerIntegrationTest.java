@@ -40,8 +40,8 @@ public class CustomerIntegrationTest {
                 .expectStatus().isOk()
                 .expectBodyList(Customer.class)
                 .hasSize(2)
-                .contains(new Customer(null, "Pedro", "Kuhn"))
-                .contains(new Customer(null, "Lia", "Kuhn"));
+                .contains(new Customer(null,"Pedro", "Kuhn"))
+                .contains(new Customer( null,"Lia", "Kuhn"));
     }
 
     @Test

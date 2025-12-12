@@ -3,7 +3,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories;
 
 @SpringBootApplication(scanBasePackages = {"Entities", "Controller", "Repository"})
-@EnableR2dbcRepositories(basePackages = "CustomerRepository")
+@EnableR2dbcRepositories(basePackages = "Repository")
 public class SpringDataR2DBCApplication {
 
     public static void main(String[] args) {
