@@ -1,0 +1,27 @@
+Intro (0:00 - 0:10)
+"Good morning/afternoon everyone. Today, we’re looking at Spring Data R2DBC—the solution for modern, reactive database access in the Java ecosystem. Let’s dive in."
+
+Slide 1: Deep Dive into R2DBC (0:10 - 0:50)
+"First, let’s understand the 'why.' For decades, Java has relied on JDBC. The problem? JDBC is blocking. One request equals one thread, and that thread sits idle while the database processes a query. This is incredibly wasteful.
+
+R2DBC, or Reactive Relational Database Connectivity, changes the game by being completely non-blocking and event-driven. Instead of returning a static list of data, it returns a Flux or a Mono. Think of it as a pipeline: as soon as the database has a row ready, it pushes it through the pipe. It uses a tiny number of threads to handle thousands of connections, making it a powerhouse for resource efficiency."
+
+Slide 2: JPA vs. R2DBC (0:50 - 1:30)
+"Now, how does it stack up against the industry standard, JPA?
+
+JPA and Hibernate are heavyweights. They offer 'magic' like lazy loading and complex relationship mapping, but that comes at a cost of high memory usage and blocking I/O. R2DBC is the 'lean' alternative. It doesn't do complex ORM magic—you won’t find @ManyToMany annotations here. Instead, it focuses on performance. While JPA hides the SQL from you, R2DBC keeps it transparent. You trade Hibernate’s convenience for R2DBC’s raw speed and massive scalability."
+
+Slide 3: Pros and Cons (1:30 - 2:10)
+"Every technology is a trade-off.
+
+The Pros are clear: extreme scalability and a very low memory footprint. It’s the perfect partner for Spring WebFlux. However, the Cons are real. There is a steep learning curve; you have to think in 'streams' rather than 'sequences.' You also lose out on automatic relationship management. If you need to join five tables, you’re often going to write that SQL and map it manually. It requires a more disciplined developer, but the performance rewards are significant."
+
+Slide 4: Implementation (2:10 - 2:40)
+"Implementation is surprisingly clean. As you can see on the slide, it follows the familiar Spring Data pattern. You define a record or class as an Entity, extend a ReactiveCrudRepository, and that’s it.
+
+The main difference is the return type. When you call repository.findAll(), your controller doesn't wait for the database to finish. It immediately returns a Flux. The connection remains open, and data flows to the client as it becomes available. It’s end-to-end reactive, from the database driver all the way to the user's browser."
+
+Slide 5: Conclusion (2:40 - 3:00)
+"So, is R2DBC 'better'? Not always.
+
+If you are building a standard CRUD app with complex business rules and low traffic, stick with JPA—it’s faster to develop. But, if you are building high-concurrency microservices, real-time streaming platforms, or working in resource-constrained environments like Kubernetes, R2DBC is the superior choice. It is the future of high-performance Java data access."
