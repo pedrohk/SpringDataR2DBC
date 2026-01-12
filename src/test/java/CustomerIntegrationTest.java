@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -82,6 +83,37 @@ public class CustomerIntegrationTest {
                     assertEquals("Julia", c.getFirstName());
                     assertEquals("Silva", c.getLastName());
                     assertNotNull(c.getId());
+                });
+    }
+
+    @Test
+    void shouldInsertAndReturnTenCustomersUsingFlux() {
+        Flux<Customer> customersFlux = Flux.just(
+                new Customer(null, "Customer1", "LastName1"),
+                new Customer(null, "Customer2", "LastName2"),
+                new Customer(null, "Customer3", "LastName3"),
+                new Customer(null, "Customer4", "LastName4"),
+                new Customer(null, "Customer5", "LastName5"),
+                new Customer(null, "Customer6", "LastName6"),
+                new Customer(null, "Customer7", "LastName7"),
+                new Customer(null, "Customer8", "LastName8"),
+                new Customer(null, "Customer9", "LastName9"),
+                new Customer(null, "Customer10", "LastName10")
+        );
+
+        repository.saveAll(customersFlux).blockLast();
+
+        webTestClient.get().uri(API_BASE_URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(Customer.class)
+                .hasSize(12)
+                .value(customers -> {
+                    long count = customers.stream()
+                            .filter(c -> c.getFirstName().startsWith("Customer"))
+                            .count();
+                    assertEquals(10, count, "Should have 10 customers with names starting with 'Customer'");
                 });
     }
 }
